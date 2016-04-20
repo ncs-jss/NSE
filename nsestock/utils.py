@@ -1,6 +1,7 @@
 import threading
 import ystockquote
 from .models import stock
+import traceback
 
 def update_shares_price():
 
@@ -13,14 +14,14 @@ def update_shares_price():
 	    		share = stock.objects.get(code=self.name)
 	    		rate = ystockquote.get_price(self.name)
 	    		if share.price != rate:
-	    			share.change = int(share.change) +1
+	    			share.update = share.update +1
 	    		share.price = rate
 	    		if rate > share.max_price_of_day:
 	    			share.max_price_of_day = rate
 	    		share.save()
 	    		print "sucess"
-	    	except :
-	    		print "updation failed"
+	    	except Exception,err:
+	    		print err
 	    		return			
 
 	# Create and run new thread

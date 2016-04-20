@@ -12,7 +12,7 @@ class stock(models.Model):
 	code = models.CharField(max_length = 10, unique = True)
 	price = models.DecimalField(max_digits = 20, decimal_places = 4 , default = 00.00)
 	max_price_of_day = models.DecimalField(max_digits= 20, decimal_places = 4, default = 00.00)
-	change = models.CharField(max_length = 15,default = '0')
+	update = models.IntegerField(default = 0)
 
 	def __unicode__(self):
 		return self.name
