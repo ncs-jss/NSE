@@ -6,13 +6,17 @@ import traceback
 def update_shares_price():
 
 	class myThread (threading.Thread):
-	    def __init__(self, name):
+	    def __init__(self, code):
 	        threading.Thread.__init__(self)
-	        self.name = name
+	        self.code = code
 	    def run(self):
 	    	try :
-	    		share = stock.objects.get(code=self.name)
-	    		rate = ystockquote.get_price(self.name)
+	    		share = stock.objects.get(code=self.code)
+	    		try :
+	    			rate = float(ystockquote.get_price(share.code))
+	    		except :
+	    			print share.code
+	    			return
 	    		if share.price != rate:
 	    			share.update = share.update +1
 	    		share.price = rate
