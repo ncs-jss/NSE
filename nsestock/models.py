@@ -7,11 +7,13 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 # Create your models here.
 
+
 class stock(models.Model):
 	name = models.CharField(max_length = 50)
 	code = models.CharField(max_length = 10, unique = True, primary_key = True)
 	price = models.DecimalField(max_digits = 20, decimal_places = 4 , default = 00.00)
 	max_price_of_day = models.DecimalField(max_digits= 20, decimal_places = 4, default = 00.00)
+	stock_Exchange = models.CharField(max_length = 10, default = 'NYSE')
 	update = models.IntegerField(default = 0)
 
 	def __unicode__(self):
@@ -24,3 +26,4 @@ class userstock(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
