@@ -4,15 +4,14 @@ from django.utils import timezone
 import datetime
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
-from decimal import Decimal
 # Create your models here.
 
 
 class stock(models.Model):
 	name = models.CharField(max_length = 50)
 	code = models.CharField(max_length = 10, unique = True, primary_key = True)
-	price = models.DecimalField(max_digits = 20, decimal_places = 4 , default = 00.00)
-	max_price_of_day = models.DecimalField(max_digits= 20, decimal_places = 4, default = 00.00)
+	price = models.FloatField(default = 00.00)
+	max_price_of_day = models.FloatField(default = 00.00)
 	stock_Exchange = models.CharField(max_length = 10, default = 'NYSE')
 	update = models.IntegerField(default = 0)
 
@@ -22,7 +21,7 @@ class stock(models.Model):
 class userstock(models.Model):
 	name = models.ForeignKey(User)
 	shares  = models.CharField(max_length =1000,default = "")
-	balance = models.DecimalField(max_digits = 20, decimal_places = 4, default = 1000000.0000)
+	balance = models.FloatField(default = 1000000.0000)
 
 	def __unicode__(self):
 		return self.name

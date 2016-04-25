@@ -11,3 +11,8 @@ class index(View):
 	def get(self,request):
 		return HttpResponse("home page")
 
+class leaderboard(View):
+	def get(self,request):
+		leader = userstock.objects.order_by('balance')
+		return HttpResponse(leader)
+

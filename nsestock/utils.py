@@ -39,10 +39,10 @@ def update_shares_price():
 	    		share = stock.objects.get(code=self.code)
 	    		nse = Nse()
 	    		try :
-	    			rate = nse.get_quote[self.code]
+	    			rate = nse.get_quote(str(share.code))
 	    			rate = rate['lastPrice']
-	    		except :
-	    			print share.code
+	    		except Exception,err :
+	    			print err
 	    			return
 	    		if share.price != rate:
 	    			share.update = share.update +1
@@ -56,28 +56,27 @@ def update_shares_price():
 	    		return			
 
 	try :
-	# check timing for stocks
+		# check timing for stocks
 		curr_time = datetime.datetime.now().time()
 		nse_start_hour = 8
 		nse_end_hour = 16
 		nyse_start_hour = 19
 		nyse_end_hour = 3
-		print curr_time.hour
-		if curr_time.hour >= nse_start_hour and curr_time.hour < nse_end_hour:
+		if 1 or curr_time.hour >= nse_start_hour and curr_time.hour < nse_end_hour:
 			# Create and run new thread
 			all_stock = stock.objects.filter(stock_Exchange = "NSE")
 			for share in all_stock:
-				print share.stock_Exchange
-				# thread = nse(share.code)
-				# thread.start()
+				#print type(share.code)
+				thread = nse(share.code)
+				thread.start()
 			
 		elif curr_time.hour >= nyse_start_hour or curr_time.hour <= nyse_end_hour:
 			# Create and run new thread
 			all_stock = stock.objects.filter(stock_Exchange = "NYSE")
 			for share in all_stock:
-				print share.stock_Exchange
-				# thread = nyse(share.code)
-				# thread.start()
+				#print type(share.code)
+				thread = nyse(share.code)
+				thread.start()
 	except Exception,err:
 		print err
 
