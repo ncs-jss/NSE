@@ -1,3 +1,5 @@
+from django.views.decorators.csrf import csrf_exempt
+
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import stock,userstock
@@ -20,21 +22,24 @@ class leaderboard(View):
 
 class index(View):
 	template = 'index.html'
+	@csrf_exempt
+	def dispatch(self, *args, **kwargs):
+		return super(index, self).dispatch(*args, **kwargs)
 	def get(self,request):
 		stocks = stock.objects.all()
 		shares = []
 		count = 1
 		for share in stocks:
-			shares += [{"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
+			shares += [{"id":count,"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
 			count += 1
 		return render(request,self.template,{'shares':shares})
 	def post(self,request):
 		if request.POST.get('action') == "update":
 			stocks = stock.objects.all()
-			shares = {}
+			shares = []
 			count = 1
 			for share in stocks:
-				shares[count] = [share.name, share.price, share.max_price_of_day, share.code]
+				shares += [{"id":count,"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
 				count += 1
 			return HttpResponse(
 				json.dumps(shares),
