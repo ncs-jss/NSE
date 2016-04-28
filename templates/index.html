@@ -10,6 +10,7 @@
 </head>
 <body>
 	<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <title>Bootstrap Example</title>
@@ -18,6 +19,7 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/index.js'%}"></script>
 </head>
 <body>
 	<div class="container">
@@ -25,6 +27,7 @@
 	  <table class="table">
 	    <thead>
 	      <tr>
+	      	<th>S No.</th>
 	        <th>Stock Name</th>
 	        <th>Price</th>
 	        <th>Max Price of Day</th>
@@ -32,7 +35,8 @@
 	    </thead>
 	    <tbody>
 	    {% for share in shares %}
-	      <tr class="success" id="{{i}}">
+	      <tr class="success" id="{{share_}}{{share.id}}">
+	      	<td>{{share.id}}</td>
 	        <td>{{share.name}} &nbsp &nbsp({{share.code}})</td>
 	        <td>{{share.price}}</td>
 	        <td>{{share.max}}</td>
