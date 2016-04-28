@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nibble Stock Exchange</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+	  <h2>Nibble Stock exchange</h2>           
+	  <table class="table">
+	    <thead>
+	      <tr>
+	        <th>Stock Name</th>
+	        <th>Price</th>
+	        <th>Max Price of Day</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	    {% for share in shares %}
+	      <tr class="success" id="{{i}}">
+	        <td>{{share.name}} &nbsp &nbsp({{share.code}})</td>
+	        <td>{{share.price}}</td>
+	        <td>{{share.max}}</td>
+	      </tr>
+	    {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+</body>
+</html>
+
+</body>
+</html>
