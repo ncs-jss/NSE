@@ -4,6 +4,7 @@ from .models import stock
 import traceback
 import datetime
 from nsetools import Nse
+from django.db import connection
 
 def update_shares_price():
 
@@ -13,18 +14,19 @@ def update_shares_price():
 	        self.code = code
 	    def run(self):
 	    	try :
-	    		share = stock.objects.get(code=self.code)
 	    		try :
-	    			rate = float(ystockquote.get_price(share.code))
+	    			rate = float(ystockquote.get_price(self.code))
 	    		except :
 	    			print share.code
 	    			return
+	    		share = stock.objects.get(code=self.code)
 	    		if share.price != rate:
 	    			share.update = share.update +1
 	    		share.price = rate
 	    		if rate > share.max_price_of_day:
 	    			share.max_price_of_day = rate
 	    		share.save()
+	    		connection.close()
 	    		print "sucess"
 	    	except Exception,err:
 	    		print err
@@ -36,14 +38,14 @@ def update_shares_price():
 	        self.code = code
 	    def run(self):
 	    	try :
-	    		share = stock.objects.get(code=self.code)
 	    		nse = Nse()
 	    		try :
-	    			rate = nse.get_quote(str(share.code))
+	    			rate = nse.get_quote(str(self.code))
 	    			rate = rate['lastPrice']
 	    		except Exception,err :
 	    			print err
 	    			return
+	    		share = stock.objects.get(code=self.code)
 	    		if share.price != rate:
 	    			share.update = share.update +1
 	    		share.price = rate

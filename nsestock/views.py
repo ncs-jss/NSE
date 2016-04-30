@@ -35,6 +35,7 @@ class index(View):
 		return render(request,self.template,{'shares':shares})
 	def post(self,request):
 		if request.POST.get('action') == "update":
+			print "update"
 			stocks = stock.objects.all()
 			shares = []
 			count = 1
