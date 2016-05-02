@@ -16,8 +16,8 @@ def update_shares_price():
 	    	try :
 	    		try :
 	    			rate = float(ystockquote.get_price(self.code))
-	    		except :
-	    			print share.code
+	    		except Exception,err :
+	    			print err
 	    			return
 	    		share = stock.objects.get(code=self.code)
 	    		if share.price != rate:
@@ -64,7 +64,7 @@ def update_shares_price():
 		nse_end_hour = 16
 		nyse_start_hour = 19
 		nyse_end_hour = 3
-		if 1 or curr_time.hour >= nse_start_hour and curr_time.hour < nse_end_hour:
+		if curr_time.hour >= nse_start_hour and curr_time.hour < nse_end_hour:
 			# Create and run new thread
 			all_stock = stock.objects.filter(stock_Exchange = "NSE")
 			for share in all_stock:

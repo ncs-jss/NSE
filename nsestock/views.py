@@ -48,13 +48,18 @@ class index(View):
 			)
 		elif request.POST.get('action') == "buy":
 			try :
+				quant = int(request.POST.get('quant'))
 				share = stock.objects.get(code = request.POST.get('code'))
-				quant = request.POST.get('quant')
 				user = None
-				if request.user.is_authenticated():
-					user = userstocks.objects.get(name = request.user.username)
-				jsonDec = json.decoder.JSONDecoder()
-				user_shares = jsonDec.decode(share.shares)
+				# if request.user.is_authenticated():
+				# 	user = userstocks.objects.get(name = request.user.username)
+				u = User.objects.get(username = 'shivji')
+				user = userstock.objects.get(name =u.id)
+				try :
+					jsonDec = json.decoder.JSONDecoder()
+					user_shares = jsonDec.decode(user.shares)
+				except :
+					user_shares = {}
 				if user.balance >= (quant*share.price):
 					user.balance -= (quant*share.price)
 					try :
@@ -63,18 +68,22 @@ class index(View):
 						user_shares[share.code] = quant
 					user.shares = json.dumps(user_shares)
 					user.save()
+					response = {}
+					response['status'] = "sucess"
 					return HttpResponse(
-					json.dumps('shares are added in your account'),
+					json.dumps(response),
 					content_type = 'application/json'
 					)
 				else :
+					response['status'] = "error"
 					return HttpResponse(
-					json.dumps("you don't have sufficient balance" ),
+					json.dumps(response),
 					content_type = 'application/json'
 					)
-			except :
+			except Exception,err :
+				print err
 				return HttpResponse(
-					json.dumps("operation failed"),
+					json.dumps(err),
 					content_type = "application/json"
 				)
 		else :
