@@ -1,15 +1,16 @@
 $(document).ready(function(){
 	$("#tabs").tabs();
-	var val;
-	$("button").click(function(){
-		val = $(this).attr('id')
-		$(this).next().children('div').dialog();
-	})
-	$(".buy").click(function(){
+	var value;
+	$("#buy_button").click(function(){
 		event.preventDefault();
-		quant = $(this).prev().prev().val()
-		code  = $(this).prev().val()
-		buy($(this),code,quant)
+		quant = $(this).prev().val()
+		code  = value
+		buy(code,quant)
+	})
+	$("button").click(function(){
+		value = $(this).next().val()
+		a = $("#buy_dailog").dialog({autoOpen:false,title:"Nibble Stock exchange"});
+		a.dialog('open');
 	})
 	time=setInterval(update,60000);
 	// function for update share price
@@ -39,16 +40,14 @@ $(document).ready(function(){
     });
 	}
 
-	function buy(thi,code,quant){
-		console.log(code)
+	function buy(code,quant){
 		$.ajax({
 			url: "/nse/",
 			type:"POST",
 			data : {action : "buy",code : code, quant : quant},
 			success : function(response){
 				if (response.status == "sucess") {
-					console.log(this)
-					thi.parent().dialog('close');
+					$("#buy_dailog").dialog('close');
 				}
 				else {
 					console.log(response)

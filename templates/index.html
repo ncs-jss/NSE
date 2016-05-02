@@ -38,6 +38,16 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				      </tr>
 				    </thead>
 				    <tbody>
+				    <div style="display: none" id="buy_dailog">
+					    <form method="post">
+			        		<div>
+			        			<div class="error"></div>
+			        			Enter quantity;
+			        			<input type="text" name="quant">
+			        			<button type="submit" id="buy_button">Buy</button>
+			        		</div>
+						</form>
+	   				</div>
 				    {% for share in shares %}
 				      <tr class="success" id="share_{{share.id}}">
 				      	<td>{{share.id}}</td>
@@ -45,16 +55,8 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				        <td>{{share.price}}</td>
 				        <td>{{share.max}}</td>
 				        <td>
-				        <button id="{{share.id}}">Buy</button>
-				        	<form method="post">
-				        		<div id="buy{{share.id}}" style="display: none">
-				        			<div class="error"></div>
-				        			Enter quantity;
-				        			<input type="text" name="quant">
-				        			<input type="hidden" name="code" value="{{share.code}}">
-				        			<button type="submit" class = "buy">Buy</button>
-				        		</div>
-   							</form>
+				        	<button id="{{share.id}}">Buy</button>
+				        	<input type="hidden" value="{{share.code}}" name="code">
 				        </td>
 				      </tr>
 				    {% endfor %}

@@ -75,7 +75,8 @@ class index(View):
 					content_type = 'application/json'
 					)
 				else :
-					response['status'] = "error"
+					response = {}
+					response['status'] = "You don't have sufficient money"
 					return HttpResponse(
 					json.dumps(response),
 					content_type = 'application/json'
