@@ -19,10 +19,10 @@ class stock(models.Model):
 		return self.name
 
 class userstock(models.Model):
-	name = models.ForeignKey(User)
-	shares  = models.CharField(max_length =1000,default = "")
+	name = models.OneToOneField(User)
+	shares  = models.CharField(max_length =10000,default = "",)
 	balance = models.FloatField(default = 1000000.0000)
 
 	def __unicode__(self):
-		return self.name
+		return str(self.name)
 
