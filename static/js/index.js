@@ -12,7 +12,7 @@ $(document).ready(function(){
 		a = $("#buy_dailog").dialog({autoOpen:false,title:"Nibble Stock exchange"});
 		a.dialog('open');
 	})
-	time=setInterval(update,60000);
+	time=setInterval(update,10000);
 	// function for update share price
 	function update(){
 		console.log('request send')
@@ -21,15 +21,20 @@ $(document).ready(function(){
 			type : "POST",
 			data : {action : "update"},
 			success: function(shares){
-				console.log(shares.length)
 				for (var i = 0; i < shares.length; i++) {
 					id = i+1;
-					var old_value = $('#share_' + id.toString()).text()
-					console.log(typeof shares[i].price )
-					//if (parseFloat(shares[i].price) >  parseFloat(old_value)
-					$('#share_'+ id.toString() + " td:nth-child(2)").text(shares[i].name)
-					$('#share_'+ id.toString() + ' td:nth-child(3)').text(shares[i].price)
-					$('#share_'+ id.toString() + ' td:nth-child(4)').text(shares[i].max)
+					var old_value = $('#stocks ' +'#share_' + id.toString() + ' td:nth-child(3)').text()
+					if (parseFloat(shares[i].price) >=  parseFloat(old_value)){
+						$('#stocks ' + '#share_'+ id.toString()).removeClass('danger')
+						$('#stocks ' + '#share_'+ id.toString()).addClass('sucess')
+					}
+					else {
+						$('#stocks ' + '#share_'+ id.toString()).removeClass('sucess')
+						$('#stocks ' + '#share_'+ id.toString()).addClass('danger')
+					}
+					$('#stocks ' + '#share_'+ id.toString() + " td:nth-child(2)").text(shares[i].name)
+					$('#stocks ' + '#share_'+ id.toString() + ' td:nth-child(3)').text(shares[i].price)
+					$('#stocks ' + '#share_'+ id.toString() + ' td:nth-child(4)').text(shares[i].max)
 					//console.log(shares[i])
 				}
         	},
@@ -50,6 +55,7 @@ $(document).ready(function(){
 					$("#buy_dailog").dialog('close');
 				}
 				else {
+					$('#error').text(response.status)
 					console.log(response)
 				}
 			},
