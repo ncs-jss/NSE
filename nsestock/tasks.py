@@ -7,7 +7,7 @@ import utils
 logger = get_task_logger(__name__)
 
 @periodic_task(
-    run_every=(crontab(minute='*/1 * * * *')),
+    run_every=30,
     name="update_price",
     ignore_result=True
 )

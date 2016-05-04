@@ -27,7 +27,8 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				</p>
 			</div>
 			<div id="stocks">
-				<div class="container">         
+				<div class="container">        
+				current balance = <span id="blnce">{{blnce}}</span> 
 				  <table class="table">
 				    <thead>
 				      <tr>
@@ -35,16 +36,27 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				        <th>Stock Name</th>
 				        <th>Price</th>
 				        <th>Max Price of Day</th>
+				        <th>Trade</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				    <div style="display: none" id="buy_dailog">
 					    <form method="post">
 			        		<div>
-			        			<div id="error"></div>
+			        			<div id="buy_error"></div>
 			        			Enter quantity;
-			        			<input type="text" name="quant">
+			        			<input type="text" name="quant" value="">
 			        			<button type="submit" id="buy_button">Buy</button>
+			        		</div>
+						</form>
+	   				</div>
+	   				<div style="display: none" id="sell_dailog">
+					    <form method="post">
+			        		<div>
+			        			<div id="sell_error"></div>
+			        			Enter quantity;
+			        			<input type="text" name="quant" value="">
+			        			<button type="submit" id="sell_button">sell</button>
 			        		</div>
 						</form>
 	   				</div>
@@ -55,7 +67,8 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				        <td>{{share.price}}</td>
 				        <td>{{share.max}}</td>
 				        <td>
-				        	<button id="{{share.id}}">Buy</button>
+				        	<button name="buy" class="trade">Buy</button>
+				        	<button name="sell" class="trade">Sell</button>
 				        	<input type="hidden" value="{{share.code}}" name="code">
 				        </td>
 				      </tr>
@@ -65,26 +78,6 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				</div>
 			</div>
 			<div id="profile">
-				<table class="table">
-				    <thead>
-				      <tr>
-				      	<th>S No.</th>
-				        <th>Stock Name</th>
-				        <th>Price</th>
-				        <th>Quantity</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    {% for share in shares %}
-				      <tr class="success" id="share_{{share.id}}">
-				      	<td>{{share.id}}</td>
-				        <td>{{share.name}}</td>
-				        <td>{{share.price}}</td>
-				        <td>{{share.quant}}</td>
-				      </tr>
-				    {% endfor %}
-				    </tbody>
-				  </table>
 			</div>
 		</div>
 	</body>

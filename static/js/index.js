@@ -1,15 +1,28 @@
 $(document).ready(function(){
 	$("#tabs").tabs();
 	var value;
+	$("#sell_button").click(function(){
+		event.preventDefault();
+		quant = $(this).prev().val()
+		code  = value
+		sell(code,quant)
+	})
 	$("#buy_button").click(function(){
 		event.preventDefault();
 		quant = $(this).prev().val()
 		code  = value
 		buy(code,quant)
 	})
-	$("button").click(function(){
-		value = $(this).next().val()
-		a = $("#buy_dailog").dialog({autoOpen:false,title:"Nibble Stock exchange"});
+	$("button.trade").click(function(){
+		value = $(this).nextAll('input').val()
+		$("#buy_button").prev().val("");
+		name = $(this).attr('name')
+		if (name == "buy"){
+			a = $("#buy_dailog").dialog({autoOpen:false,title:"Nibble Stock exchange"});
+		}
+		else {
+			a = $("#sell_dailog").dialog({autoOpen:false,title:"Nibble Stock exchange"});
+		}
 		a.dialog('open');
 	})
 	time=setInterval(update,10000);
@@ -24,11 +37,11 @@ $(document).ready(function(){
 				for (var i = 0; i < shares.length; i++) {
 					id = i+1;
 					var old_value = $('#stocks ' +'#share_' + id.toString() + ' td:nth-child(3)').text()
-					if (parseFloat(shares[i].price) >=  parseFloat(old_value)){
+					if (parseFloat(shares[i].price) >  parseFloat(old_value)){
 						$('#stocks ' + '#share_'+ id.toString()).removeClass('danger')
 						$('#stocks ' + '#share_'+ id.toString()).addClass('sucess')
 					}
-					else {
+					else if (parseFloat(shares[i].price) <  parseFloat(old_value)) {
 						$('#stocks ' + '#share_'+ id.toString()).removeClass('sucess')
 						$('#stocks ' + '#share_'+ id.toString()).addClass('danger')
 					}
@@ -47,16 +60,36 @@ $(document).ready(function(){
 
 	function buy(code,quant){
 		$.ajax({
-			url: "/nse/",
+			url: "/nse/buy/",
 			type:"POST",
-			data : {action : "buy",code : code, quant : quant},
+			data : {code : code, quant : quant},
 			success : function(response){
 				if (response.status == "sucess") {
 					$("#buy_dailog").dialog('close');
+					$("#blnce").text(response.blnce)
 				}
 				else {
-					$('#error').text(response.status)
-					console.log(response)
+					$('#buy_error').text(response.status)
+				}
+			},
+			error : function(xhr,errmsg,err){
+        		console.log('error')
+        		console.log(xhr.responseText);
+        	}
+		})
+	}
+	function sell(code,quant){
+		$.ajax({
+			url: "/nse/sell/",
+			type:"POST",
+			data : {code : code, quant : quant},
+			success : function(response){
+				if (response.status == "sucess") {
+					$("#sell_dailog").dialog('close');
+					$("#blnce").text(response.blnce)
+				}
+				else {
+					$('#sell_error').text(response.status)
 				}
 			},
 			error : function(xhr,errmsg,err){
