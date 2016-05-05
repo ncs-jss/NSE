@@ -6,9 +6,9 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 class stockResource(resources.ModelResource):
-
 	class Meta:
 		model = stock
+		import_id_fields = ('code',)
 
 class stockAdmin(ImportExportModelAdmin):
 	list_display = ['name','code','price','max_price_of_day','update', 'stock_Exchange']
