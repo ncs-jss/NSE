@@ -15,6 +15,9 @@ class leaderboard(View):
 		leader = userstock.objects.order_by('balance')
 		return HttpResponse(leader)
 
+class base(View):
+	def get(self,request):
+		return HttpResponseRedirect('/nse/')
 class index(View):
 	template = 'index.html'
 	@csrf_exempt
