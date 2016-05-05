@@ -1,0 +1,13 @@
+Django==1.8.2
+celery==3.1.18
+django-admin-tools==0.7.2
+django-braces==1.8.1
+django-celery==3.1.17
+django-import-export==0.4.2
+jsonfield==1.0.3
+kombu==3.0.26
+nsetools==1.0.1
+redis==2.10.3
+simplejson==3.8.2
+ystockquote==0.2.4
+

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	update()
 	$("#tabs").tabs();
 	var value;
 	$("#sell_button").click(function(){
@@ -25,6 +26,7 @@ $(document).ready(function(){
 		}
 		a.dialog('open');
 	})
+
 	time=setInterval(update,10000);
 	// function for update share price
 	function update(){
