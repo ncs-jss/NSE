@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from .models import stock,userstock
 from django.views.generic import View
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render
 from django.template import Context, Template
 import json
 # Create your views here.
@@ -18,21 +17,25 @@ class leaderboard(View):
 class base(View):
 	def get(self,request):
 		return HttpResponseRedirect('/nse/')
+
 class index(View):
 	template = 'index.html'
 	@csrf_exempt
 	def dispatch(self, *args, **kwargs):
 		return super(index, self).dispatch(*args, **kwargs)
 	def get(self,request):
-		stocks = stock.objects.all()
-		shares = []
-		count = 1
-		u = User.objects.get(username = 'shivji')
-		user = userstock.objects.get(name =u.id)
-		for share in stocks:
-			shares += [{"id":count,"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
-			count += 1
-		return render(request,self.template,{'shares':shares,'blnce':user.balance})
+		if request.user.is_authenticated():
+			stocks = stock.objects.all()
+			shares = []
+			count = 1
+			u = User.objects.get(username = 'shivji')
+			user = userstock.objects.get(name =u.id)
+			for share in stocks:
+				shares += [{"id":count,"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
+				count += 1
+			return render(request,self.template,{'shares':shares,'blnce':user.balance})
+		else :
+			return HttpResponseRedirect('/login/')
 	def post(self,request):
 		if request.POST.get('action') == "update":
 			stocks = stock.objects.all()
@@ -108,6 +111,7 @@ class buy(View):
 		try :
 			jsonDec = json.decoder.JSONDecoder()
 			user_shares = jsonDec.decode(user.shares)
+			print user_shares
 		except :
 			user_shares = {}
 		response = {}

@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'import_export',
     'nsestock',
+    'login',
 )
 
 MIDDLEWARE_CLASSES = (

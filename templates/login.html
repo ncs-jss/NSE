@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Niible Stock exchange</title>
+</head>
+<body>
+	<form method="post">
+		{% csrf_token %}
+		{{register.as_p}}
+		<input type="submit" name="register">
+	</form>
+	<form method="post">
+		{% csrf_token %}
+		{{login.as_p}}
+		<input type="submit" name="login">
+	</form>
+</body>
+</html>
