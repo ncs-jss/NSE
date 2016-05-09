@@ -4,7 +4,8 @@ from django.views.generic import View
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import Context, Template
 from .forms import login_form,register_form
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
+from nsestock.models import userstock
 # Create your views here.
 
 
@@ -22,6 +23,8 @@ class register(View):
 				User.objects.create_user(**form.cleaned_data)
 				user = authenticate(username = form.cleaned_data['username'],password = form.cleaned_data['password'])
 				login(request,user)
+				stock_user = userstock(name = user)
+				stock_user.save()
 				return HttpResponseRedirect('/')
 			else :
 				errors = form.errors
@@ -42,3 +45,8 @@ class register(View):
 					return HttpResponse("user is not valid")
 			else :
 				return render(request, self.template, {'login':form})
+
+class logoff(View):
+	def get(self,request):
+		logout(request)
+		return HttpResponseRedirect('/')

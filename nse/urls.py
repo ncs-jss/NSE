@@ -8,6 +8,6 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^nse/',include('nsestock.urls')),
-    url(r'^login/',include('login.urls')),
+    url(r'^account/',include('login.urls')),
     url(r'',nsestock.views.base.as_view()),
 ]

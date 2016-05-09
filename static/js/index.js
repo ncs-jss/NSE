@@ -16,7 +16,10 @@ $(document).ready(function(){
 	})
 	$("button.trade").click(function(){
 		value = $(this).nextAll('input').val()
+		$('#buy_error').text("")
+		$('#sell_error').text("")
 		$("#buy_button").prev().val("");
+		$("#sell_button").prev().val("");
 		name = $(this).attr('name')
 		if (name == "buy"){
 			a = $("#buy_dailog").dialog({autoOpen:false,title:"Nibble Stock exchange"});
