@@ -1,4 +1,7 @@
 *.pyc
-db.sqlite3
 celerybeat.pid
 celerybeat-schedule
+db.sqlite3
+migrations/*
+requirements.txt~
+.gitignore~

@@ -62,7 +62,11 @@ class sell(View):
 	def get(self,request):
 		return HttpResponse("this is only for api call")
 	def post(self,request):
-		quant = int(request.POST.get('quant'))
+		try:
+			quant = int(request.POST.get('quant'))
+		except :
+			return HttpResponse(json.dumps({'status':"enter a valid quantity"}),
+				content_type = 'application/json')
 		share = stock.objects.get(code = request.POST.get('code'))
 		user = userstock.objects.get(name = request.user.id)
 		try :
@@ -100,7 +104,11 @@ class buy(View):
 	def get(self,request):
 		return HttpResponse('This page is available only for api call')
 	def post(self,request):
-		quant = int(request.POST.get('quant'))
+		try:
+			quant = int(request.POST.get('quant'))
+		except :
+			return HttpResponse(json.dumps({'status':"enter a valid quantity"}),
+				content_type = 'application/json')
 		share = stock.objects.get(code = request.POST.get('code'))
 		user = userstock.objects.get(name = request.user.id)
 		try :

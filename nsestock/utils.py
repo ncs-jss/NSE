@@ -22,7 +22,7 @@ def update_shares_price():
 	    		share = stock.objects.get(code=self.code)
 	    		if share.price != rate:
 	    			share.update = share.update +1
-	    		share.price = rate
+	    		share.price = rate*65
 	    		if rate > share.max_price_of_day:
 	    			share.max_price_of_day = rate
 	    		share.save()

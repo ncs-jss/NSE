@@ -5,13 +5,9 @@ django-braces==1.8.1
 django-celery==3.1.17
 django-import-export==0.4.2
 jsonfield==1.0.3
-kombu==3.0.26
+kombu==3.0.30
 nsetools==1.0.1
 redis==2.10.3
 simplejson==3.8.2
 ystockquote==0.2.4
-dj-database-url==0.4.0
-gunicorn==19.4.5
-psycopg2==2.6.1
-whitenoise==2.0.6
-
+psycopg2
