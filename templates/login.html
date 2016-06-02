@@ -1,18 +1,134 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Niible Stock exchange</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS-->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}"></link>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/form-elements.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'js/jquery.js'%}"></script>
+	<script src="{% static 'js/jquery-ui.js'%}"></script>
+	<script src="{% static 'js/bootstrap.min.js'%}"></script>
 </head>
 <body>
-	<form method="post">
-		{% csrf_token %}
-		{{register.as_p}}
-		<input type="submit" name="register">
-	</form>
-	<form method="post">
-		{% csrf_token %}
-		{{login.as_p}}
-		<input type="submit" name="login">
-	</form>
+	<div class="top-content">
+    <div class="inner-bg">
+    <div class="container">         
+    <div class="row">
+    <div class="col-sm-5">
+      <div class="form-box">
+        <div class="form-top">
+          <div class="form-top-left">
+            <h3>Login to our site</h3>
+            <p>Enter username and password to log on:</p>
+          </div>
+          <div class="form-top-right">
+            <i class="fa fa-key"></i>
+          </div>
+        </div>
+        <div class="form-bottom">
+          <form role="form" action="" method="post" class="login-form">
+            {% csrf_token %}
+            {% if Login_error or Login_errors %}
+              <div class="error">{{Login_error}}</div>
+              <div class="error">{{Login.non_field_errors}}</div>
+            {% endif %}
+            <div class="form-group">
+              {% if Login_errors %}
+                <div class="error">{{Login_errors.username}}</div>
+              {% endif %}
+              <label class="sr-only" for="username">Username</label>
+              <input type="text" name="username" placeholder="Username..." class="form-username form-control" id="username" title="Enter Username " value="{{Login.username.value}}">
+            </div>
+            <div class="form-group">
+              {% if Login_errors %}
+                <div class="error">{{Login_errors.password}}</div>
+              {% endif %}
+              <label class="sr-only" for="password">Password</label>
+              <input type="password" name="password" placeholder="Password..." class="form-password form-control" id="password">
+            </div>
+            <button type="submit" name="login" class="btn">Sign in!</button>
+          </form>
+        </div>
+      </div>    
+    </div>
+
+    <div class="col-sm-1 middle-border"></div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5">
+      <div class="form-box">
+        <div class="form-top">
+          <div class="form-top-left">
+            <h3>Sign up now</h3>
+            <p>Fill in the form below to get instant access:</p>
+          </div>
+          <div class="form-top-right">
+            <i class="fa fa-pencil"></i>
+          </div>
+        </div>
+        <div class="form-bottom">
+        <form role="form" action="" method="post" class="registration-form">
+          {% csrf_token %}
+          {% if register_errors%}
+            <div class="error">{{Register.non_field_errors}}</div>
+          {% endif %}
+          <div class="form-group">
+            {% if register_errors %}
+              <div class="error">{{register_errors.first_name}}</div>
+            {% endif %}
+            <label class="sr-only" for="form-first-name">First name</label>
+            <input type="text" name="first_name" placeholder="First Name..." class="form-first-name form-control" id="form-first-name"  value="{{Register.first_name.value}}">
+          </div>
+          <div class="form-group">
+            {% if register_errors %}
+              <div class="error">{{register_errors.last_name}}</div>
+            {% endif %}
+            <label class="sr-only" for="form-first-name">Last name</label>
+            <input type="text" name="last_name" placeholder="First Name..." class="form-first-name form-control" id="form-first-name" pattern="[A-Z a-z]{3,20}" value="{{Register.last_name.value}}">
+          </div>
+          <div class="form-group">
+            {% if register_errors %}
+              <div class="error">{{register_errors.username}}</div>
+            {% endif %}
+            <label class="sr-only" for="form-first-name">Username</label>
+            <input type="text" name="username" placeholder="Username..." class="form-first-name form-control" id="form-first-name" pattern="[A-Z a-z]{3,20}" value="{{Register.username.value}}">
+          </div>
+          <div class="form-group">
+            {% if register_errors %}
+              <div class="error">{{register_errors.email}}</div>
+            {% endif %}
+            <label class="sr-only" for="form-email">Email</label>
+            <input type="text" name="email" placeholder="Email..." class="form-email form-control" id="form-email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Enter a valid email" value="{{Register.email.value}}">
+          </div>
+          <div class="form-group">
+            {% if register_errors %}
+              <div class="error">{{register_errors.password}}</div>
+            {% endif %}
+            <label class="sr-only" for="password">Password</label>
+            <input type="password" name="password" placeholder="Password..." class="form-email form-control" id="password">
+          </div>
+          <div class="form-group">
+            {% if register_errors %}
+              <div class="error">{{register_errors.password2}}</div>
+            {% endif %}
+            <label class="sr-only" for="password">Repeat Password</label>
+            <input type="password" name="password2" placeholder="Confirm Password..." class="form-email form-control" id="password">
+          </div>
+          <button type="submit" name="register" class="btn">Sign me up!</button>
+        </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 </body>
 </html>

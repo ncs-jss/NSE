@@ -16,6 +16,7 @@ class register(View):
 		log_form = login_form()
 		return render(request, self.template, {'login':log_form, 'register':reg_form})
 	def post(self,request):
+		error=""
 		if 'register' in request.POST:
 			form = register_form(request.POST)
 			if form.is_valid():
@@ -26,9 +27,11 @@ class register(View):
 				stock_user = userstock(name = user)
 				stock_user.save()
 				return HttpResponseRedirect('/')
-			else :
-				errors = form.errors
-				return render(request,self.template, {'error':errors,'register':form})
+			errors = form.errors
+			return render(request, self.template, {
+				'Register' : form,
+				#'register_error' : error,
+				'register_errors' : errors})
 		else :
 			form = login_form(request.POST)
 			if form.is_valid():	
@@ -40,11 +43,14 @@ class register(View):
 						login(request,user)
 						return HttpResponseRedirect('/')
 					else :
-						return HttpResponse("User account is deactivated")
-				else:
-					return HttpResponse("user is not valid")
-			else :
-				return render(request, self.template, {'login':form})
+						error = "User account is deactivated"
+				else :
+					error = "username and password does not match"
+			errors = form.errors
+			return render(request , self.template , {
+				'Login' : form,
+				'Login_error' : error, 
+				'Login_errors' : errors})
 
 class logoff(View):
 	def get(self,request):
