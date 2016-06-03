@@ -1,3 +1,4 @@
+{% load static  %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -12,7 +13,15 @@
 		<script src="{% static 'js/bootstrap.min.js'%}"></script>
 		<script src="{% static 'js/index.js'%}"></script>
 	</head>
-<body>
-
+	<body>
+		<div class="container">
+  		<h2>Leader Board</h2>
+  		<ul class="list-group">
+    		<li class="list-group-item"><span class="badge">Net-worth</span> Name & Username</li>
+    		{% for leader in leaders %}
+    		<li class="list-group-item"><span class="badge">{{leader.worth}}</span> {{leader.name}} & {{leader.username}}</li>
+    		{% endfor %}
+  		</ul>
+</div>
 </body>
 </html>

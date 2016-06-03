@@ -10,6 +10,7 @@ import json
 
 
 class leaderboard(View):
+	template = "leader.html"
 	def get(self,request):
 		participants = userstock.objects.all()
 		leaders = []
@@ -23,9 +24,9 @@ class leaderboard(View):
 					net_worth += (user_shares[share] * stock.objects.get(code = share).price)
 			except :
 				pass
-			leaders += [{"name" : user.name.get_full_name(), "worth" : net_worth}]
+			leaders += [{"name" : user.name.get_full_name(),'username':user.name.username, "worth" : net_worth}]
 		leaders.sort(key=lambda x : x['worth'], reverse = True)
-		return HttpResponse(leaders)
+		return render(request, self.template, {'leaders':leaders})
 
 class base(View):
 	def get(self,request):
