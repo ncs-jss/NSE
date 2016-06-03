@@ -16,10 +16,15 @@
 	<body>
 	{% if user.is_authenticated %}
 		Log in user -  {{user.username}}
+		<div>
+			<a href="/account/logout/">Logout</a>
+		</div>
+	{% else %}
+		<div>
+			<a href="/account/login/">Login</a>
+		</div>
 	{% endif %}
-	<div>
-		<a href="/account/logout/">Logout</a>
-	</div>
+	
 	<div>
 		<a href="/nse/leader/">LeaderBoard</a>
 	</div>
@@ -39,8 +44,11 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				</p>
 			</div>
 			<div id="stocks">
-				<div class="container">        
-				current balance = <span id="blnce">{{blnce}}</span> 
+				<div class="container">
+				{% if user.is_authenticated %}
+					current balance = <span id="blnce">{{blnce}}</span> 
+				{% endif %}
+				
 				  <table class="table">
 				    <thead>
 				      <tr>
@@ -48,7 +56,10 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 				        <th>Stock Name</th>
 				        <th>Price</th>
 				        <th>Max Price of Day</th>
-				        <th>Trade</th>
+				        {% if user.is_authenticated %}
+				        	<th>Aquired Quantity</th>
+							<th>Trade</th>
+						{% endif %}
 				      </tr>
 				    </thead>
 				    <tbody>
@@ -73,16 +84,19 @@ about hard work and dedication but also about ingenuity and fun. The wide range 
 						</form>
 	   				</div>
 				    {% for share in shares %}
-				      <tr class="success" id="share_{{share.id}}">
-				      	<td>{{share.id}}</td>
-				        <td>{{share.name}}</td>
-				        <td>{{share.price}}</td>
-				        <td>{{share.max}}</td>
-				        <td>
-				        	<button name="buy" class="trade">Buy</button>
-				        	<button name="sell" class="trade">Sell</button>
-				        	<input type="hidden" value="{{share.code}}" name="code">
-				        </td>
+				      <tr class="success" id="share_{{share.code}}">
+				      	<td class="id">{{share.id}}</td>
+				        <td class="name">{{share.name}}</td>
+				        <td class="price">{{share.price}}</td>
+				        <td class="max">{{share.max}}</td>
+				        {% if user.is_authenticated %}
+				        	<td class="quant">{{share.quant}}</td>
+				        	<td>
+					        	<button name="buy" class="trade">Buy</button>
+					        	<button name="sell" class="trade">Sell</button>
+					        	<input type="hidden" value="{{share.code}}" name="code">
+					        </td>
+						{% endif %}
 				      </tr>
 				    {% endfor %}
 				    </tbody>

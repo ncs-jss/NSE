@@ -11,11 +11,20 @@ import json
 
 class leaderboard(View):
 	def get(self,request):
-		leader = userstock.objects.order_by('-balance')
+		participants = userstock.objects.all()
 		leaders = []
-		for user in leader:
-			leaders += [user.name.username] + ['<br>']
-		print leaders
+		for user in participants:
+			net_worth = user.balance
+			try :
+				jsonDec = json.decoder.JSONDecoder()
+				user_shares = jsonDec.decode(user.shares)
+
+				for share in user_shares:
+					net_worth += (user_shares[share] * stock.objects.get(code = share).price)
+			except :
+				pass
+			leaders += [{"name" : user.name.get_full_name(), "worth" : net_worth}]
+		leaders.sort(key=lambda x : x['worth'], reverse = True)
 		return HttpResponse(leaders)
 
 class base(View):
@@ -28,25 +37,36 @@ class index(View):
 	def dispatch(self, *args, **kwargs):
 		return super(index, self).dispatch(*args, **kwargs)
 	def get(self,request):	
-		if request.user.is_authenticated():
-			stocks = stock.objects.all()
-			shares = []
-			count = 1
+		#if request.user.is_authenticated():
+		stocks = stock.objects.all()
+		shares = []
+		try :
+			blnce = 0		
 			user = userstock.objects.get(name =request.user.id)
-			for share in stocks:
-				shares += [{"id":count,"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
-				count += 1
-			return render(request,self.template,{'shares':shares,'blnce':user.balance})
-		else :
-			return HttpResponseRedirect('/account/login/')
+			jsonDec = json.decoder.JSONDecoder()
+			user_shares = jsonDec.decode(user.shares)
+		except :
+			user_shares = {}
+			
+		for share in stocks:
+			try:
+				blnce = round(user.balance,2)
+				quant = user_shares[share.code]
+			except :
+				quant = 0
+			shares += [{"name":share.name, "price":round(share.price,2), "max":share.max_price_of_day, "code":share.code, "quant":quant}]
+			
+		return render(request,self.template,{'shares':shares,'blnce':blnce})
+		# else :
+		# 	return HttpResponseRedirect('/account/login/')
 	def post(self,request):
+
 		if request.POST.get('action') == "update":
 			stocks = stock.objects.all()
 			shares = []
-			count = 1
 			for share in stocks:
-				shares += [{"id":count,"name":share.name, "price":share.price, "max":share.max_price_of_day, "code":share.code}]
-				count += 1
+				shares += [{"name":share.name, "price":round(share.price,2), "max":round(share.max_price_of_day,2), "code":share.code}]
+
 			return HttpResponse(
 				json.dumps(shares),
 				content_type = 'application/json'
@@ -58,7 +78,6 @@ class sell(View):
 	@csrf_exempt
 	def dispatch(self, *args, **kwargs):
 		return super(sell, self).dispatch(*args, **kwargs)
-
 	def get(self,request):
 		return HttpResponse("this is only for api call")
 	def post(self,request):
@@ -69,18 +88,16 @@ class sell(View):
 				content_type = 'application/json')
 		share = stock.objects.get(code = request.POST.get('code'))
 		user = userstock.objects.get(name = request.user.id)
+		response = {}
 		try :
 			jsonDec = json.decoder.JSONDecoder()
 			user_shares = jsonDec.decode(user.shares)
 		except :
 			user_shares = {}
-			response = {}
 			response['status'] = "You don't have any share"
-			return HttpResponse(
-			json.dumps(response),
+			return HttpResponse(json.dumps(response),
 			content_type = 'application/json'
 			)
-		response = {}
 		if share.code in user_shares and user_shares[share.code] >= quant:
 			user.balance += (quant*share.price)
 			user_shares[share.code] -= quant
@@ -88,6 +105,7 @@ class sell(View):
 			user.save()
 			response['status'] = "sucess"
 			response['blnce'] = user.balance
+			response['quant'] = user_shares[share.code]
 			return HttpResponse(json.dumps(response),
 			content_type = 'application/json'
 			)
@@ -127,6 +145,7 @@ class buy(View):
 			user.save()
 			response['status'] = "sucess"
 			response['blnce']  = user.balance
+			response['quant'] = user_shares[share.code]
 			return HttpResponse(
 			json.dumps(response),
 			content_type = 'application/json'

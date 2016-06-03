@@ -40,20 +40,18 @@ $(document).ready(function(){
 			data : {action : "update"},
 			success: function(shares){
 				for (var i = 0; i < shares.length; i++) {
-					id = i+1;
-					var old_value = $('#stocks ' +'#share_' + id.toString() + ' td:nth-child(3)').text()
+					var old_value= $('#stocks ' +'#share_' + shares[i].code + ' .price').text()
 					if (parseFloat(shares[i].price) >  parseFloat(old_value)){
-						$('#stocks ' + '#share_'+ id.toString()).removeClass('danger')
-						$('#stocks ' + '#share_'+ id.toString()).addClass('sucess')
+						$('#stocks ' + '#share_'+ (shares[i].code)).removeClass('danger')
+						$('#stocks ' + '#share_'+ (shares[i].code)).addClass('sucess')
 					}
 					else if (parseFloat(shares[i].price) <  parseFloat(old_value)) {
-						$('#stocks ' + '#share_'+ id.toString()).removeClass('sucess')
-						$('#stocks ' + '#share_'+ id.toString()).addClass('danger')
+						$('#stocks ' + '#share_'+ (shares[i].code)).removeClass('sucess')
+						$('#stocks ' + '#share_'+ (shares[i].code)).addClass('danger')
 					}
-					$('#stocks ' + '#share_'+ id.toString() + " td:nth-child(2)").text(shares[i].name)
-					$('#stocks ' + '#share_'+ id.toString() + ' td:nth-child(3)').text(shares[i].price)
-					$('#stocks ' + '#share_'+ id.toString() + ' td:nth-child(4)').text(shares[i].max)
-					//console.log(shares[i])
+					$('#stocks ' + '#share_'+ (shares[i].code) + " .name").text(shares[i].name)
+					$('#stocks ' + '#share_'+ (shares[i].code) + ' .price').text(shares[i].price)
+					$('#stocks ' + '#share_'+ (shares[i].code) + ' .max').text(shares[i].max)
 				}
         	},
         	error : function(xhr,errmsg,err){
@@ -71,7 +69,8 @@ $(document).ready(function(){
 			success : function(response){
 				if (response.status == "sucess") {
 					$("#buy_dailog").dialog('close');
-					$("#blnce").text(response.blnce)
+					$("#blnce").text(response.blnce);
+					$('#stocks ' + '#share_'+ code + " .quant").text(response.quant)
 				}
 				else {
 					$('#buy_error').text(response.status)
@@ -92,6 +91,7 @@ $(document).ready(function(){
 				if (response.status == "sucess") {
 					$("#sell_dailog").dialog('close');
 					$("#blnce").text(response.blnce)
+					$('#stocks ' + '#share_'+ code + " .quant").text(response.quant)
 				}
 				else {
 					$('#sell_error').text(response.status)

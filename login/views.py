@@ -30,7 +30,6 @@ class register(View):
 			errors = form.errors
 			return render(request, self.template, {
 				'Register' : form,
-				#'register_error' : error,
 				'register_errors' : errors})
 		else :
 			form = login_form(request.POST)
