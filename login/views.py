@@ -26,6 +26,7 @@ class register(View):
 				login(request,user)
 				stock_user = userstock(name = user)
 				stock_user.save()
+				form.mail_send()
 				return HttpResponseRedirect('/')
 			errors = form.errors
 			return render(request, self.template, {

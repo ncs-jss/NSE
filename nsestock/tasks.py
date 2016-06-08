@@ -31,3 +31,4 @@ def update_price():
 #     utils.reset_max_shares_price()
 #     print "price reset"
 #     logger.info("Price updated")
+

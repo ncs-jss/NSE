@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-
+from login.tasks import send_mail
 class login_form(forms.Form):
 	username = forms.CharField(required = True)
 	password = forms.CharField(required = True)
@@ -32,5 +32,8 @@ class register_form(forms.ModelForm):
 			return cleaned_data
 		else :
 			raise forms.ValidationError(_("password does not match."))
+
+	def mail_send(self):
+		send_mail.delay(self.cleaned_data['email'])
 
 
